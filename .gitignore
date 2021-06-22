@@ -1,4 +1,5 @@
 data
+dist
 scripts/raw-data
 scripts/output
 covid-compare

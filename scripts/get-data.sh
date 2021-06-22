@@ -4,17 +4,16 @@ set -eu
 set -o pipefail
 
 get-de() {
-  result="./raw-data/data-de.csv"
+  result="${PROJECT_ROOT}/data/data-de.csv"
   mkdir -p "$(dirname $result)"
   wget -O "$result" "https://arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data"
 }
 
 get-pl() {
-  result="./raw-data/data-pl.csv"
-  archive="./raw-data/data-pl.zip"
+  mkdir -p "${PROJECT_ROOT}/data"
+  result="${PROJECT_ROOT}/data/data-pl.csv"
+  archive="${PROJECT_ROOT}/data/data-pl.zip"
   archive_extract=$(mktemp -d)
-
-  mkdir -p "$(dirname $result)"
 
   wget -O "$archive" "https://arcgis.com/sharing/rest/content/items/e16df1fa98c2452783ec10b0aea4b341/data"
   unzip -q -o "$archive" -d "$archive_extract"
