@@ -1,6 +1,7 @@
 Comparing numbers between Berlin and Szczecin using golang and gota
 
 Results can be seen on a [google sheet](https://docs.google.com/spreadsheets/d/1UX7VBZ3nHmGlWaYBoB_3D3IGxsXOL6bhZju3YK9g2t4)
+The analysis is being run every day at 11:00 GMT as a scheduled [Fargate](https://aws.amazon.com/fargate/) task. 
 
 Sources of data: 
 - Germany: [Robert Koch Institut](https://www.arcgis.com/home/item.html?id=f10774f1c63e40168479a1feb6c7ca74)
