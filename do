@@ -17,8 +17,8 @@ build() {
 
 }
 
+container_name="ghcr.io/ptek/covid-compare"
 build_container() {
-    local container_name="ghcr.io/ptek/covid-compare"
     docker build -t ${container_name} -f "${PROJECT_ROOT}/docker/Dockerfile" .
 }
 
