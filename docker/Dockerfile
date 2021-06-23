@@ -9,7 +9,8 @@ RUN apk add --no-cache \
     bash \
     tzdata\
     enca \
-    openssl
+    openssl \
+    file
 
 COPY ./do /opt/do
 COPY ./scripts/*.sh /opt/scripts/
