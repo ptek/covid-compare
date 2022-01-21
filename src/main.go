@@ -169,6 +169,15 @@ func main() {
 		Arrange(dataframe.RevSort("Date")).
 		Rename("berlin", "Cases_SUM")
 
+	munich := germany_all.
+		Filter(
+			dataframe.F{Colname: "City", Comparator: series.Eq, Comparando: "SK München"},
+		).
+		GroupBy("Date").
+		Aggregation([]dataframe.AggregationType{dataframe.Aggregation_SUM}, []string{"Cases"}).
+		Arrange(dataframe.RevSort("Date")).
+		Rename("munchen", "Cases_SUM")
+
 	poland_all := readIncidencePoland(poland_data_path)
 
 	poland := poland_all.
@@ -180,18 +189,25 @@ func main() {
 		Arrange(dataframe.RevSort("Date")).
 		Rename("poland", "Cases_SUM")
 
-	zachodniopomorskie_all := poland_all.Filter(
-		dataframe.F{Colname: "County", Comparator: series.Eq, Comparando: "zachodniopomorskie"},
-	)
-
-	zachodniopomorskie := zachodniopomorskie_all.
-		GroupBy("Date", "County").
+	warszawa := poland_all.
+		Filter(
+			dataframe.F{Colname: "City", Comparator: series.Eq, Comparando: "Warszawa"},
+		).
+		GroupBy("Date").
 		Aggregation([]dataframe.AggregationType{dataframe.Aggregation_SUM}, []string{"Cases"}).
 		Arrange(dataframe.RevSort("Date")).
-		Drop("County").
-		Rename("zachodniopomorskie", "Cases_SUM")
+		Rename("warszawa", "Cases_SUM")
 
-	szczecin := zachodniopomorskie_all.
+	lodz := poland_all.
+		Filter(
+			dataframe.F{Colname: "City", Comparator: series.Eq, Comparando: "Łódź"},
+		).
+		GroupBy("Date").
+		Aggregation([]dataframe.AggregationType{dataframe.Aggregation_SUM}, []string{"Cases"}).
+		Arrange(dataframe.RevSort("Date")).
+		Rename("lodz", "Cases_SUM")
+
+	szczecin := poland_all.
 		Filter(
 			dataframe.F{Colname: "City", Comparator: series.Eq, Comparando: "Szczecin"},
 		).
@@ -200,6 +216,12 @@ func main() {
 		Arrange(dataframe.RevSort("Date")).
 		Rename("szczecin", "Cases_SUM")
 
-	res := szczecin.InnerJoin(zachodniopomorskie, "Date").InnerJoin(poland, "Date").InnerJoin(berlin, "Date").InnerJoin(germany, "Date")
+	res := szczecin.
+		InnerJoin(warszawa, "Date").
+		InnerJoin(lodz, "Date").
+		InnerJoin(poland, "Date").
+		InnerJoin(berlin, "Date").
+		InnerJoin(munich, "Date").
+		InnerJoin(germany, "Date")
 	writeIncidences(res)
 }
