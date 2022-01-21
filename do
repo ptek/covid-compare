@@ -11,6 +11,7 @@ build() {
     mkdir -p "${PROJECT_ROOT}/dist/bin"
     
     pushd ./src
+        go mod tidy
         env GOOS=linux go build -o "${PROJECT_ROOT}/dist/bin/covid-compare_Linux"
         go build -o "${PROJECT_ROOT}/dist/bin/covid-compare_Darwin"
     popd
@@ -19,12 +20,12 @@ build() {
 
 container_name="ghcr.io/ptek/covid-compare"
 build_container() {
-    docker build -t ${container_name} -f "${PROJECT_ROOT}/docker/Dockerfile" .
+    podman build -t ${container_name} -f "${PROJECT_ROOT}/docker/Dockerfile" .
 }
 
 
 push_container() {
-    docker push ${container_name}
+    podman push ${container_name}
 }
 
 run_dev() {
@@ -49,7 +50,7 @@ usage() {
     echo "  build:   build the binaries for the local system and linux x86_64"
     echo "           and put them into the dist folder"
     echo ""
-    echo "  build_container: build the docker container with the scripts needed"
+    echo "  build_container: build an OCI container with the scripts needed"
     echo "           to run all parts of the analysis"
     echo ""
     echo "  run_dev: compile and run the latest version of the code locally"
